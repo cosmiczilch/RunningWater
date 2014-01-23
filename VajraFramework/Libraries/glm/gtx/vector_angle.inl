@@ -16,7 +16,8 @@ namespace glm
 		genType const & y
 	)
 	{
-		return degrees(acos(dot(x, y)));
+		typename genType::value_type Dot = clamp(dot(x, y), typename genType::value_type(-1), typename genType::value_type(1));
+		return degrees(acos(Dot));
 	}
 
 	//! \todo epsilon is hard coded to 0.01
@@ -27,10 +28,11 @@ namespace glm
 		detail::tvec2<valType> const & y
 	)
 	{
+		valType Dot = clamp(dot(x, y), valType(-1), valType(1));
 #ifdef GLM_FORCE_RADIANS
-		valType const Angle(acos(dot(x, y)));
+		valType const Angle(acos(Dot));
 #else
-		valType const Angle(glm::degrees(acos(dot(x, y))));
+		valType const Angle(glm::degrees(acos(Dot)));
 #endif
 		detail::tvec2<valType> const TransformedVector(glm::rotate(x, Angle));
 		if(all(epsilonEqual(y, TransformedVector, valType(0.01))))
@@ -47,7 +49,8 @@ namespace glm
 		detail::tvec3<valType> const & ref
 	)
 	{
-		valType const Angle(glm::degrees(glm::acos(glm::dot(x, y))));
+		valType Dot = clamp(dot(x, y), valType(-1), valType(1));
+		valType const Angle(glm::degrees(glm::acos(Dot)));
 
 		if(glm::dot(ref, glm::cross(x, y)) < valType(0))
 			return -Angle;

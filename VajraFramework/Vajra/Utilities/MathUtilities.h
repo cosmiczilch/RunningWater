@@ -26,6 +26,8 @@ extern const glm::vec4 ZERO_VEC4_POSITION;
 extern const glm::vec4 ZERO_VEC4_DIRECTION;
 
 glm::quat QuaternionFromLookVectors(glm::vec3 requiredForward, glm::vec3 up = YAXIS);
+
+// Functions to get the basis vectors from a quaternion:
 glm::vec3 QuaternionRightVector(glm::quat q);
 glm::vec3 QuaternionUpVector(glm::quat q);
 glm::vec3 QuaternionForwardVector(glm::quat q);
