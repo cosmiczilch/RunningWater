@@ -7,7 +7,7 @@
 #include "ExampleGame2/Components/ShadyCamera/ShadyCamera.h"
 #include "ExampleGame2/GameSingletons/GameSingletons.h"
 #include "ExampleGame2/Test/TestFile.h"
-#include "ExampleGame2/Ui/TouchHandlers/MainMenuTouchHandlers.h"
+#include "ExampleGame2/Ui/TouchHandlers/TestUiSceneTouchHandlers.h"
 #include "Vajra/Common/Objects/Object.h"
 #include "Vajra/Engine/Components/DerivedComponents/Renderer/MeshRenderer.h"
 #include "Vajra/Engine/Components/DerivedComponents/Transform/Transform.h"
@@ -27,87 +27,8 @@
 void initUiGameObjects();
 
 int TestFuntion() {
-	// Instantiate a ComponentMapper so that its singleton get stored:
+	// Instantiate a ComponentMapper so that its singleton gets stored:
 	/* ComponentMapper* componentMapper = */ new ComponentMapper();
-
-	{
-#if 0
-		/* GameObject* gameObject = */ PrefabLoader::InstantiateGameObjectFromPrefab(
-									   FRAMEWORK->GetFileSystemUtils()->GetDevicePrefabsResourcesPath() + "monkey.prefab",
-									   ENGINE->GetSceneGraph3D());
-#endif
-	}
-
-
-	FRAMEWORK->GetLogger()->dbglog("\nIn TestFunction()");
-#if 0
-	GameObject* wavybox = ENGINE->GetSceneGraph()->GetGameObjectById(109);
-	if (wavybox != nullptr) {
-		Transform* transform = wavybox->GetTransform();
-		transform->Scale(4.0f);
-	}
-#endif
-	{
-#if 0
-		SINGLETONS->GetLevelManager()->LoadLevelFromFile(FRAMEWORK->GetFileSystemUtils()->GetDeviceBaseResourcesPath() + "levels/SD_TestScene.lvl");
-		GameObject* testZone = new GameObject(ENGINE->GetSceneGraph3D());
-		ENGINE->GetSceneGraph3D()->GetRootGameObject()->AddChild(testZone->GetId());
-		GridZone* zone = testZone->AddComponent<GridZone>();
-		zone->SetZoneBounds(3, 0, 5, 5);
-#endif
-	}
-	{
-#if 0
-		GameObject* camera = new GameObject(ENGINE->GetSceneGraph3D());
-		ENGINE->GetSceneGraph3D()->GetRootGameObject()->AddChild(camera->GetId());
-		ShadyCamera* cameraComponent = camera->AddComponent<ShadyCamera>();
-		cameraComponent->SetCameraType(CAMERA_TYPE_PERSPECTIVE);
-		ENGINE->GetSceneGraph3D()->SetMainCameraId(camera->GetId());
-		cameraComponent->SetGridManager(SINGLETONS->GetGridManager());
-		//cameraComponent->PanTo(0.0f, 0.0f);
-		cameraComponent->MoveToRoom(0.0f, 0.0f);
-		//cameraComponent->ZoomToOverview();
-
-		GameObject* walker = new GameObject(ENGINE->GetSceneGraph3D());
-		ENGINE->GetSceneGraph3D()->GetRootGameObject()->AddChild(walker->GetId());
-#endif
-	}
-	{
-#if 0
-		GameObject* testGameScript = new GameObject(ENGINE->GetSceneGraph3D());
-		ENGINE->GetSceneGraph3D()->GetRootGameObject()->AddChild(testGameScript->GetId());
-		MeshRenderer* meshRenderer = testGameScript->AddComponent<MeshRenderer>();
-		meshRenderer->InitMesh(FRAMEWORK->GetFileSystemUtils()->GetDeviceModelResourcesFolderName() + "Suzanne.model");
-		testGameScript->AddComponent<SampleGameScript>();
-		GridNavigator* gNav = testGameScript->AddComponent<GridNavigator>();
-		gNav->SetGridPosition(0, 2);
-		testGameScript->AddComponent<PlayerUnit>();
-#endif
-	}
-	{
-#if 0
-		GameObject* testGameScript = new GameObject(ENGINE->GetSceneGraph3D());
-		ENGINE->GetSceneGraph3D()->GetRootGameObject()->AddChild(testGameScript->GetId());
-		MeshRenderer* meshRenderer = testGameScript->AddComponent<MeshRenderer>();
-		meshRenderer->InitMesh(FRAMEWORK->GetFileSystemUtils()->GetDeviceModelResourcesFolderName() + "Suzanne.model");
-		testGameScript->AddComponent<SampleGameScript>();
-		GridNavigator* gNav = testGameScript->AddComponent<GridNavigator>();
-		gNav->SetGridPosition(10, 4);
-		testGameScript->AddComponent<PlayerUnit>();
-#endif
-	}
-	{
-#if 0
-		GameObject* testGameScript = new GameObject(ENGINE->GetSceneGraph3D());
-		ENGINE->GetSceneGraph3D()->GetRootGameObject()->AddChild(testGameScript->GetId());
-		MeshRenderer* meshRenderer = testGameScript->AddComponent<MeshRenderer>();
-		meshRenderer->InitMesh(FRAMEWORK->GetFileSystemUtils()->GetDeviceModelResourcesFolderName() + "Suzanne.model");
-		testGameScript->AddComponent<SampleGameScript>();
-		GridNavigator* gNav = testGameScript->AddComponent<GridNavigator>();
-		gNav->SetGridPosition(8, 2);
-		testGameScript->AddComponent<BaseUnit>();
-#endif
-	}
 
 	{
 #if 1
@@ -144,42 +65,7 @@ int TestFuntion() {
 						   	     	 ENGINE->GetSceneGraph3D());
 #endif
 	}
-	{
-#if 0
-		
 
-		GameObject* gameObject = PrefabLoader::InstantiateGameObjectFromPrefab(
-								 FRAMEWORK->GetFileSystemUtils()->GetDevicePrefabsResourcesPath() + "test.prefab",
-								 ENGINE->GetSceneGraph3D());
-			
-    	FRAMEWORK->GetLogger()->dbglog("\nDoes gameObject have unit tag %i", gameObject->HasTag("Unit"));
-    	FRAMEWORK->GetLogger()->dbglog("\nDoes gameObject have batman tag %i", gameObject->HasTag("Batman"));
-    	FRAMEWORK->GetLogger()->dbglog("\nDoes gameObject have arispace tag %i", gameObject->HasTag("Airspace"));
-    	FRAMEWORK->GetLogger()->dbglog("\nadding the unit tag");
-		gameObject->AddTag("Unit");
-    	FRAMEWORK->GetLogger()->dbglog("\nDoes gameObject have unit tag %i", gameObject->HasTag("Unit"));
-		FRAMEWORK->GetLogger()->dbglog("\nadding the airspace, batman and mispelled tag tag");
-		gameObject->AddTag("Airspace");
-		gameObject->AddTag("Batman");
-		gameObject->AddTag("sdfdgsdgad");
-    	FRAMEWORK->GetLogger()->dbglog("\nDoes gameObject have unit tag %i", gameObject->HasTag("Unit"));
-    	FRAMEWORK->GetLogger()->dbglog("\nDoes gameObject have batman tag %i", gameObject->HasTag("Batman"));
-    	FRAMEWORK->GetLogger()->dbglog("\nDoes gameObject have arispace tag %i", gameObject->HasTag("Airspace"));
-		FRAMEWORK->GetLogger()->dbglog("\removing the airspace and unit tag tag");
-		gameObject->RemoveTag("Airspace");
-		gameObject->RemoveTag("Unit");
-    	FRAMEWORK->GetLogger()->dbglog("\nDoes gameObject have unit tag %i", gameObject->HasTag("Unit"));
-    	FRAMEWORK->GetLogger()->dbglog("\nDoes gameObject have batman tag %i", gameObject->HasTag("Batman"));
-    	FRAMEWORK->GetLogger()->dbglog("\nDoes gameObject have arispace tag %i", gameObject->HasTag("Airspace"));
-		
-		FRAMEWORK->GetLogger()->dbglog("\removing the airspace and unit tag again!");
-    	FRAMEWORK->GetLogger()->dbglog("\nDoes gameObject have unit tag %i", gameObject->HasTag("Unit"));
-    	FRAMEWORK->GetLogger()->dbglog("\nDoes gameObject have batman tag %i", gameObject->HasTag("Batman"));
-    	FRAMEWORK->GetLogger()->dbglog("\nDoes gameObject have arispace tag %i", gameObject->HasTag("Airspace"));
-		
-		gameObject->RemoveTag("Airspace");
-#endif
-	}
 
 	initUiGameObjects();
 
@@ -201,7 +87,7 @@ void initUiGameObjects() {
 	}
 
 	{
-		std::string pathToTestUiScene = FRAMEWORK->GetFileSystemUtils()->GetDeviceUiScenesResourcesPath() + "mainMenu.uiscene";
-		UiSceneLoader::LoadUiSceneFromUiSceneFile(pathToTestUiScene.c_str(), new MainMenuTouchHandlers());
+		std::string pathToTestUiScene = FRAMEWORK->GetFileSystemUtils()->GetDeviceUiScenesResourcesPath() + "testUiScene.uiscene";
+		UiSceneLoader::LoadUiSceneFromUiSceneFile(pathToTestUiScene.c_str(), new TestUiSceneTouchHandlers());
 	}
 }

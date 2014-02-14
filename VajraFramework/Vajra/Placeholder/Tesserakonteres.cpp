@@ -109,7 +109,7 @@ namespace Tesserakonteres {
 			transform->Scale(0.08f);
 			transform->Translate(1.0f, transform->GetForward());
 			// transform->Rotate(180.0f, YAXIS);
-			transform->SetPosition(10.0f, 0.0f, -10.0f);
+			transform->SetPosition(0.0f, 0.0f, 0.0f);
 			wavybox = gameObject;
 #endif
 			//
