@@ -12,7 +12,7 @@
 // Forward Declarations:
 class Object;
 class Mesh;
-class ParticleSystem;
+class ParticleSystemData;
 
 //[[COMPONENT]]//
 class ParticleSystemRenderer : public Renderer {
@@ -50,7 +50,7 @@ private:
 	glm::vec4 diffuseColor;
 	std::shared_ptr<TextureAsset> textureAsset;
 
-	ParticleSystem* particleSystemRef;
+	ParticleSystemData* particleSystemDataRef;
 
 	std::string shaderName;
 };

@@ -2,6 +2,7 @@
 #define PARTICLE_SYSTEM_H
 
 #include "Vajra/Common/Components/Component.h"
+#include "Vajra/Engine/Components/DerivedComponents/Renderer/ParticleSystemData.h"
 #include "Vajra/Utilities/MathUtilities.h"
 
 #include "Libraries/glm/glm.hpp"
@@ -14,7 +15,7 @@ class Object;
 class Particle;
 
 //[[COMPONENT]]//
-class ParticleSystem : public Component {
+class ParticleSystem : public Component, public ParticleSystemData {
 public:
 	ParticleSystem();
 	ParticleSystem(Object* object_);
@@ -56,6 +57,14 @@ public:
 	//[[PROPERTY]]//
 	void SetLooping(bool looping);
 
+	// Functions required to expose the particle attribute vectors for drawing:
+	// @Override
+	virtual unsigned int   getNumParticlesToDraw()           { return this->numParticlesToDraw; }
+	virtual glm::vec3*     getParticlePositionsForDrawing()  { return this->particlePositions;  }
+	virtual float*         getParticleSizesForDrawing()      { return this->particleSizes;  }
+	virtual glm::vec4*     getParticleColorsForDrawing()     { return this->particleColors;  }
+	virtual std::string    getPathToTexture()                { return this->pathToTexture; }
+
 protected:
 	// @Override
 	virtual void start();
@@ -76,13 +85,7 @@ private:
 	//
 	void raiseSpentEvent();
 
-	// Functions required to expose the particle attribute vectors for drawing:
-	inline unsigned int getNumParticlesToDraw() { return this->numParticlesToDraw; }
-	inline glm::vec3* getParticlePositionsForDrawing()  { return this->particlePositions;  }
-	inline float* getParticleSizesForDrawing()  { return this->particleSizes;  }
-	inline glm::vec4* getParticleColorsForDrawing()  { return this->particleColors;  }
 
-	std::string getPathToTexture() { return this->pathToTexture; }
 
 	// Shader attribute vectors for drawing:
 	unsigned int numParticlesToDraw;
