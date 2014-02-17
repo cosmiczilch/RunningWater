@@ -9,15 +9,13 @@
 
 #include <deque>
 
-unsigned int ParticleSystem::componentTypeId = COMPONENT_TYPE_ID_PARTICLE_SYSTEM;
-
 #define MAXIMUM_TIME_BETWEEN_BATCH_SPAWNS_seconds 0.1f
 
-ParticleSystem::ParticleSystem() : Component() {
+ParticleSystem::ParticleSystem() : ParticleSystemData() {
 	this->init();
 }
 
-ParticleSystem::ParticleSystem(Object* object_) : Component(object_) {
+ParticleSystem::ParticleSystem(Object* object_) : ParticleSystemData(object_) {
 	this->init();
 }
 

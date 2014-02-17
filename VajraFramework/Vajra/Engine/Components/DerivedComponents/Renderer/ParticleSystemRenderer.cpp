@@ -93,7 +93,7 @@ void ParticleSystemRenderer::Draw() {
 }
 
 void ParticleSystemRenderer::initializeRendererStructures() {
-	this->particleSystemDataRef = this->GetObject()->GetComponent<ParticleSystem>();
+	this->particleSystemDataRef = this->GetObject()->GetComponent<ParticleSystemData>();
 	VERIFY(this->particleSystemDataRef != nullptr, "Particle system found");
 
 	// Make VBOs:

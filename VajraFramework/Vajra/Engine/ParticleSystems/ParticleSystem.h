@@ -15,13 +15,13 @@ class Object;
 class Particle;
 
 //[[COMPONENT]]//
-class ParticleSystem : public Component, public ParticleSystemData {
+class ParticleSystem : public ParticleSystemData {
 public:
 	ParticleSystem();
 	ParticleSystem(Object* object_);
 	~ParticleSystem();
 
-	static inline unsigned int GetTypeId() { return componentTypeId; }
+	static inline unsigned int GetTypeId() { return ParticleSystemData::GetTypeId(); }
 
 	//[[PROPERTY]]//
 	void SetNumberOfParticles(unsigned int numParticlesPerSecond_, unsigned int maxNumParticles);
@@ -118,8 +118,6 @@ private:
 	bool isInited;
 	bool isPlaying;
 	bool isLooping;
-
-	static unsigned int componentTypeId;
 
 	friend class ParticleSystemRenderer;
 };

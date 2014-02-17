@@ -91,6 +91,7 @@ bool renderFrame() {
     glClear( GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);    checkGlError("glClear");
 
     float deltaTime = ENGINE->GetTimer()->GetDeltaFrameTime();
+#if 0
     {
         // Temp, testing transforms:
         GameObject* quad = ENGINE->GetSceneGraph3D()->GetGameObjectById(112);
@@ -130,6 +131,7 @@ bool renderFrame() {
         	}
         }
     }
+#endif
 #if 0
     {
         // Temp, testing transforms:
@@ -144,13 +146,14 @@ bool renderFrame() {
         	}
         }
     }
-#endif
     {
         // Sending arbit message for testing
         {
 			ENGINE->GetMessageHub()->SendPointcastMessage(MESSAGE_TYPE_UNSPECIFIED, 111);
         }
     }
+#endif
+#if 0
     {
     	GameObject* wavybox = ENGINE->GetSceneGraph3D()->GetGameObjectById(114);
     	// Transform* transform = wavybox->GetTransform();
@@ -159,7 +162,6 @@ bool renderFrame() {
     	/* Armature* armature = */ wavybox->GetComponent<Armature>();
 
 
-#if 0
     	{
 			Bone* someBone = armature->GetBoneByName("LadyAssassinWeights_BackJoint01");
 			someBone->Rotate(5.0f * deltaTime inRadians, XAXIS, false);
@@ -194,8 +196,8 @@ bool renderFrame() {
 			Bone* someBone = armature->GetBoneByName("joint6");
 			someBone->Rotate(5.0f * deltaTime inRadians, ZAXIS, true);
     	}
-#endif
     }
+#endif
 #if 1
     {
         if(ENGINE->GetInput()->GetTouchCount() > 0)
@@ -214,12 +216,14 @@ bool renderFrame() {
     }
 #endif
 
+#if 0
 	DebugDraw::DrawPoint(glm::vec3(1.0f, 1.0f, 1.0f));
 
 	GameObject* torus = ENGINE->GetSceneGraph3D()->GetGameObjectById(115);
 	DebugDraw::DrawArrow(ZERO_VEC3, torus->GetTransform()->GetPosition());
 
 	DebugDraw::DrawCube(torus->GetTransform()->GetPosition(), 1.0f);
+#endif
 
 
     ENGINE->DoFrame();

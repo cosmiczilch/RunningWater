@@ -1,5 +1,6 @@
 #include "Vajra/Engine/Components/DerivedComponents/Camera/Camera.h"
 #include "ExampleGame2/Components/GameScripts/SampleGameScript.h"
+#include "ExampleGame2/Simulation/Simulation.h"
 #include "ExampleGame2/Test/TestFile.h"
 #include "ExampleGame2/Ui/TouchHandlers/TestUiSceneTouchHandlers.h"
 #include "Vajra/Common/Objects/Object.h"
@@ -25,35 +26,35 @@ int TestFuntion() {
 	/* ComponentMapper* componentMapper = */ new ComponentMapper();
 
 	{
-#if 1
+#if 0
 		/*GameObject* gameObject = */PrefabLoader::InstantiateGameObjectFromPrefab(
 							    	 FRAMEWORK->GetFileSystemUtils()->GetDevicePrefabsResourcesPath() + "test.prefab",
 						   	     	 ENGINE->GetSceneGraph3D());
 #endif
 	}
 	{
-#if 1
+#if 0
 		/*GameObject* gameObject = */PrefabLoader::InstantiateGameObjectFromPrefab(
 							    	 FRAMEWORK->GetFileSystemUtils()->GetDevicePrefabsResourcesPath() + "fire_0.prefab",
 						   	     	 ENGINE->GetSceneGraph3D());
 #endif
 	}
 	{
-#if 1
+#if 0
 		/*GameObject* gameObject = */PrefabLoader::InstantiateGameObjectFromPrefab(
 							    	 FRAMEWORK->GetFileSystemUtils()->GetDevicePrefabsResourcesPath() + "fire_1.prefab",
 						   	     	 ENGINE->GetSceneGraph3D());
 #endif
 	}
 	{
-#if 1
+#if 0
 		/*GameObject* gameObject = */PrefabLoader::InstantiateGameObjectFromPrefab(
 							    	 FRAMEWORK->GetFileSystemUtils()->GetDevicePrefabsResourcesPath() + "fire_2.prefab",
 						   	     	 ENGINE->GetSceneGraph3D());
 #endif
 	}
 	{
-#if 1
+#if 0
 		/*GameObject* gameObject = */PrefabLoader::InstantiateGameObjectFromPrefab(
 							    	 FRAMEWORK->GetFileSystemUtils()->GetDevicePrefabsResourcesPath() + "fire_3.prefab",
 						   	     	 ENGINE->GetSceneGraph3D());
@@ -62,6 +63,8 @@ int TestFuntion() {
 
 
 	initUiGameObjects();
+
+	SIMULATION->BeginSimulation();
 
 	return 4;
 }

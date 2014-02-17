@@ -61,116 +61,12 @@ namespace Tesserakonteres {
 
 	void initGameObjectsForScene() {
 
-		GameObject* parent = nullptr;
-		GameObject* child = nullptr;
-		GameObject* wavybox = nullptr;
-		{
-			GameObject* gameObject = new GameObject(ENGINE->GetSceneGraph3D());
-			ENGINE->GetSceneGraph3D()->GetRootGameObject()->AddChild(gameObject->GetId());
-			MeshRenderer* meshRenderer = gameObject->AddComponent<MeshRenderer>();
-			meshRenderer->InitMesh(FRAMEWORK->GetFileSystemUtils()->GetDeviceModelResourcesFolderName() + "Suzanne.model");
-			parent = gameObject;
-
-			Transform* transform = parent->GetTransform();
-			transform->Scale(0.2f, 0.2f, 0.2f);
-		}
-		{
-			GameObject* gameObject = new GameObject(ENGINE->GetSceneGraph3D());
-			ENGINE->GetSceneGraph3D()->GetRootGameObject()->AddChild(gameObject->GetId());
-			MeshRenderer* meshRenderer = gameObject->AddComponent<MeshRenderer>();
-			meshRenderer->InitMesh(FRAMEWORK->GetFileSystemUtils()->GetDeviceModelResourcesFolderName() + "TexturedCube.model");
-			child = gameObject;
-
-			parent->AddChild(child->GetId());
-			Transform* transform = child->GetTransform();
-			transform->Translate(1.5f, transform->GetForward());
-			transform->Rotate(-90.0f inRadians, transform->GetLeft());
-			transform->Scale(0.4f, 0.4f, 0.4f);
-		}
-		{
-#if 1
-			// Draw a wavybox
-			GameObject* gameObject = new GameObject(ENGINE->GetSceneGraph3D());
-			ENGINE->GetSceneGraph3D()->GetRootGameObject()->AddChild(gameObject->GetId());
-			MeshRenderer* meshRenderer = gameObject->AddComponent<MeshRenderer>();
-			meshRenderer->InitMesh(FRAMEWORK->GetFileSystemUtils()->GetDeviceModelResourcesFolderName() + "SD_Thief_mesh.model");
-			BakedSkeletalAnimation* bakedSkeletalAnimation = gameObject->AddComponent<BakedSkeletalAnimation>();
-			bakedSkeletalAnimation->AddAnimationClip(FRAMEWORK->GetFileSystemUtils()->GetDeviceAnimationResourcesFolderName() + "SD_Thief_mesh.skeletalanimation#idle", 1.0f);
-			bakedSkeletalAnimation->AddAnimationClip(FRAMEWORK->GetFileSystemUtils()->GetDeviceAnimationResourcesFolderName() + "SD_Thief_mesh.skeletalanimation#walking", 1.0f);
-			bakedSkeletalAnimation->AddAnimationClip(FRAMEWORK->GetFileSystemUtils()->GetDeviceAnimationResourcesFolderName() + "SD_Thief_mesh.skeletalanimation#jumping", 1.0f);
-			// bakedSkeletalAnimation->AddAnimationClip(FRAMEWORK->GetFileSystemUtils()->GetDeviceAnimationResourcesFolderName() + "SD_Guard_mesh.skeletalanimation#nodding", 1.0f);
-			std::string animclipToPlay = "jumping";
-			AnimationClip* animationClip = bakedSkeletalAnimation->GetAnimationClip(animclipToPlay.c_str());
-			animationClip->SetLooping(true);
-			animationClip->SetPlaybackSpeed(0.1f);
-			bakedSkeletalAnimation->PlayAnimationClip(animclipToPlay.c_str());
-			//
-			Transform* transform = gameObject->GetTransform();
-			transform->Scale(0.08f);
-			transform->Translate(1.0f, transform->GetForward());
-			// transform->Rotate(180.0f, YAXIS);
-			transform->SetPosition(0.0f, 0.0f, 0.0f);
-			wavybox = gameObject;
-#endif
-			//
-#if 0
-			RigidAnimation* rigidAnimation = gameObject->AddComponent<RigidAnimation>();
-			rigidAnimation->AddAnimationClip(FRAMEWORK->GetFileSystemUtils()->GetDeviceAnimationResourcesFolderName() + "simpleanimation.animclips#clip0");
-			rigidAnimation->AddAnimationClip(FRAMEWORK->GetFileSystemUtils()->GetDeviceAnimationResourcesFolderName() + "simpleanimation.animclips#clip1");
-			AnimationClip* animationClip = rigidAnimation->GetAnimationClip("clip1");
-			animationClip->SetPlaybackSpeed(1.0f);
-			animationClip->SetLooping(true);
-			rigidAnimation->PlayAnimationClip("clip1");
-#endif
-
-#if 0
-			ENGINE->GetTween()->TweenPosition(gameObject->GetId(), glm::vec3(-1.0f, 0.0f, 0.0f),
-					                                               glm::vec3(-1.0f, 1.0f, 0.0f),
-					                                               2.0f, tweenCallback);
-#endif
-#if 0
-			ENGINE->GetTween()->TweenTransform(gameObject->GetId(), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f),
-																	glm::angleAxis(0.0f, YAXIS), glm::angleAxis(90.0f, YAXIS),
-																	gameObject->GetTransform()->GetScale(), gameObject->GetTransform()->GetScale(),
-					                                                2.0f, tweenCallback);
-			ENGINE->GetTween()->TweenToNumber(-1.0f, 1.0f, 2.0f, true, "tween_stubby_arrows", tweenNumberCallback);
-#endif
-		}
-		{
-			GameObject* gameObject = new GameObject(ENGINE->GetSceneGraph3D());
-			ENGINE->GetSceneGraph3D()->GetRootGameObject()->AddChild(gameObject->GetId());
-			MeshRenderer* meshRenderer = gameObject->AddComponent<MeshRenderer>();
-			meshRenderer->InitMesh(FRAMEWORK->GetFileSystemUtils()->GetDeviceModelResourcesFolderName() + "pTorus1.model");
-
-			Transform* transform = gameObject->GetTransform();
-			transform->SetScale(0.1f, 0.1f, 0.1f);
-			//
-#if 1
-			RigidAnimation* rigidAnimation = gameObject->AddComponent<RigidAnimation>();
-			rigidAnimation->AddAnimationClip(FRAMEWORK->GetFileSystemUtils()->GetDeviceAnimationResourcesFolderName() + "pTorus1.animclips#Take_0010");
-			AnimationClip* animationClip = rigidAnimation->GetAnimationClip("Take_0010");
-			animationClip->SetPlaybackSpeed(0.2f);
-			animationClip->SetLooping(true);
-			rigidAnimation->PlayAnimationClip("Take_0010");
-#endif
-		}
-		{
-			GameObject* gameObject = new GameObject(ENGINE->GetSceneGraph3D());
-			ENGINE->GetSceneGraph3D()->GetRootGameObject()->AddChild(gameObject->GetId());
-			MeshRenderer* meshRenderer = gameObject->AddComponent<MeshRenderer>();
-			meshRenderer->InitMesh(FRAMEWORK->GetFileSystemUtils()->GetDeviceModelResourcesFolderName() + "stubbyarrows.model");
-			FRAMEWORK->GetLogger()->dbglog("\nStubby Arrows id: %d", gameObject->GetId());
-
-			Transform* transform = gameObject->GetTransform();
-			transform->Scale(0.6f, 0.6f, 0.6f);
-			transform->SetPosition(wavybox->GetTransform()->GetPositionWorld());
-		}
 		{
 			GameObject* camera = new GameObject(ENGINE->GetSceneGraph3D());
 			ENGINE->GetSceneGraph3D()->GetRootGameObject()->AddChild(camera->GetId());
 			Camera* cameraComponent = camera->AddComponent<Camera>();
 			cameraComponent->SetCameraType(CAMERA_TYPE_PERSPECTIVE);
-			camera->GetTransform()->SetPosition(4.0f, 4.0f, 4.0f);
+			camera->GetTransform()->SetPosition(20.0f, 20.0f, 20.0f);
 			// camera->GetTransform()->SetOrientation(-45.0f, camera->GetTransform()->GetUp());
 			// camera->GetTransform()->Rotate(45.0f inRadians, camera->GetTransform()->GetLeft());
 			camera->GetTransform()->LookAt(0.0f, 0.0f, 0.0f);
@@ -186,59 +82,6 @@ namespace Tesserakonteres {
 			//
 			dlightComponent->SetAmbientColor(0.15f, 0.15f, 0.3f, 1.0f);
 			dlightComponent->SetDiffuseColor(0.5f, 0.5f, 0.55f, 1.0f);
-		}
-		{
-			GameObject* gameObject = new GameObject(ENGINE->GetSceneGraph3D());
-			ENGINE->GetSceneGraph3D()->GetRootGameObject()->AddChild(gameObject->GetId());
-			MeshRenderer* meshRenderer = gameObject->AddComponent<MeshRenderer>();
-			meshRenderer->InitMesh(FRAMEWORK->GetFileSystemUtils()->GetDeviceModelResourcesFolderName() + "TexturedCube.model");
-
-			Transform* transform = gameObject->GetTransform();
-			transform->Scale(0.4f);
-			transform->SetPosition(5.0f, 0.0f, -8.0f);
-			transform->SetOrientation(PI / 2.0f, YAXIS);
-
-#if 1
-			glm::vec3 currentPosition = transform->GetPosition();
-			glm::vec3 finalPosition   = currentPosition + glm::vec3(4.0f, 1.0f, 2.0f);
-
-			// glm::quat currentOrientation = transform->GetOrientation();
-			// glm::quat finalOrientation   = glm::angleAxis(PI / 4.0f, YAXIS);
-
-			// glm::vec3 currentScale = transform->GetScale();
-			// glm::vec3 finalScale   = currentScale;
-#endif
-
-#if 1
-			ENGINE->GetTween()->TweenPosition(gameObject->GetId(),
-											  currentPosition, finalPosition,
-											  4.0f,
-											  true,
-											  TWEEN_TRANSLATION_CURVE_TYPE_PARABOLA,
-											  true,
-											  tweenCallback);
-#endif
-		}
-		{
-#if 0
-			GameObject* gameObject = new GameObject(ENGINE->GetSceneGraph3D());
-			ENGINE->GetSceneGraph3D()->GetRootGameObject()->AddChild(gameObject->GetId());
-			MeshRenderer* meshRenderer = gameObject->AddComponent<MeshRenderer>();
-			meshRenderer->InitMesh(FRAMEWORK->GetFileSystemUtils()->GetDeviceModelResourcesFolderName() + "bone.model");
-			parent = gameObject;
-
-			Transform* transform = parent->GetTransform();
-			transform->Scale(0.2f);
-#endif
-		}
-		{
-#if 0
-			GameObject* noiseMaker = new GameObject(ENGINE->GetSceneGraph3D());
-			ENGINE->GetSceneGraph3D()->GetRootGameObject()->AddChild(noiseMaker->GetId());
-			AudioSource* source = noiseMaker->AddComponent<AudioSource>();
-			source->SetAudioClip(FRAMEWORK->GetFileSystemUtils()->GetDeviceAudioResourcesFolderName() + "lowAlert(hisfixed).wav");
-			source->Play();
-#endif
 		}
 
 

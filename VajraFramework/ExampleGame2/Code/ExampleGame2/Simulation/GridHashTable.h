@@ -1,6 +1,7 @@
 #ifndef GRID_HASH_TABLE_H
 #define GRID_HASH_TABLE_H
 
+#include <complex>
 #include <vector>
 
 // Forward Declarations:
@@ -14,9 +15,16 @@ public:
 	GridHashTable();
 	~GridHashTable();
 
-	void  AddCell(Cell* cell);
-	bool  HasCell(int x, int y, int z);
-	Cell* GetCell(int x, int y, int z);
+	Cell* AddCell    (int x, int y, int z);
+	bool  HasCell    (int x, int y, int z);
+	Cell* GetCell    (int x, int y, int z);
+	void  RemoveCell (int x, int y, int z);
+
+	// Iterator-like functions:
+	void iterator_BeginCells();
+	Cell* iterator_NextCell();
+
+	unsigned int Size() { return this->size; }
 
 private:
 	void init();
@@ -25,8 +33,16 @@ private:
 	// Utility Functions:
 	static inline unsigned int hashFunction_getSlotForXYZ(int x, int y, int z);
 
+	// Iterator private variables:
+	unsigned int iterator_slotIndex;
+	unsigned int iterator_slotChainIndex;
+	void iterator_advanceIterators();
+
+	unsigned int size;
+
 	std::vector<HASH_TABLE_SLOT> slots;
 };
+
 
 ////////////////////////////////////////////////////////////////////////////////
 

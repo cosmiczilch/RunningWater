@@ -1,16 +1,23 @@
 #ifndef CELL_H
 #define CELL_H
 
+#include "ExampleGame2/Simulation/Declarations.h"
+
 #include "Libraries/glm/glm.hpp"
 
 class Cell {
 public:
-	glm::ivec3 center;
+	Cell();
+	~Cell();
+
+	glm::ivec3 position;
 
 	float pressure;
 	glm::vec3 u;
 
-	Cell* next;
+	CellType_type cellType;
+	int layer;
+
 private:
 };
 
