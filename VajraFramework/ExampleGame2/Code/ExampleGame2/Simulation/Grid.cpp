@@ -48,8 +48,34 @@ void Grid::updateCells() {
 	}
 
 	// Create a buffer zone of air around the fluid cells:
-	const int numBufferZoneLayers = 4;
-	for (int layerNumber = 1; layerNumber < numBufferZoneLayers; ++layerNumber) {
+	const int numBufferZoneLayers = 3;
+	for (int layerNumber = 1; layerNumber <= numBufferZoneLayers; ++layerNumber) {
+		this->hashTable->iterator_BeginCells();
+		Cell* cell = nullptr;
+		while ((cell = this->hashTable->iterator_NextCell()) != nullptr) {
+			if ((cell->cellType == CELL_TYPE_AIR || cell->cellType == CELL_TYPE_FLUID) &&
+				cell->layer == (layerNumber - 1)) {
+				for (int n = 0; n < NEIGHBOR_NUM_NEIGHBORS; ++n) {
+					Cell* neighbor = this->getNeighborForCell(cell, (NEIGHBOR_type)n, false);
+					if (neighbor != nullptr) {
+						// Neighbor already exists:
+						if (neighbor->layer == -1 && !this->isCellSolid(neighbor->position.x, neighbor->position.y, neighbor->position.z)) {
+							neighbor->cellType = CELL_TYPE_AIR;
+							neighbor->layer = layerNumber;
+						}
+					} else {
+						// Create the neighbor:
+						neighbor = this->getNeighborForCell(cell, (NEIGHBOR_type)n, true);
+						neighbor->layer = layerNumber;
+						if (!this->isCellSolid(neighbor->position.x, neighbor->position.y, neighbor->position.z)) {
+							neighbor->cellType = CELL_TYPE_AIR;
+						} else {
+							neighbor->cellType = CELL_TYPE_SOLID;
+						}
+					}
+				}
+			}
+		}
 	}
 
 	// Delete any cells with layer == -1:
@@ -73,19 +99,26 @@ void Grid::updateCells() {
 	this->drawCells();
 }
 
-void Grid::markSolidCells() {
-	// Mark the floor:
-	for (int i = 0; i < WATER_ARENA_SIZE; i += CELL_SIZE) {
-		for (int j = 0; j < WATER_ARENA_SIZE; j += CELL_SIZE) {
-			Cell* cell = this->hashTable->AddCell(i, 0, j);
-			cell->cellType = CELL_TYPE_SOLID;
-		}
+bool Grid::isCellSolid(int x, int y, int z) {
+	if (y <= 0) {
+		// Floor
+		return true;
 	}
+	if (x <= 0 || x >= WATER_ARENA_SIZE) {
+		return true;
+	}
+	if (z <= 0 || z >= WATER_ARENA_SIZE) {
+		return true;
+	}
+	Cell* cell = this->hashTable->GetCell(x, y, z);
+	if (cell != nullptr) {
+		return (cell->cellType == CELL_TYPE_SOLID);
+	}
+	return false;
 }
 
 void Grid::init() {
 	this->hashTable = new GridHashTable();
-	this->markSolidCells();
 }
 
 void Grid::destroy() {
@@ -110,3 +143,25 @@ void Grid::drawCells() {
 	}
 }
 
+Cell* Grid::getNeighborForCell(Cell* cell, NEIGHBOR_type neighborType, bool create) {
+	Cell* neighbor = nullptr;
+	int nx = cell->position.x;
+	int ny = cell->position.y;
+	int nz = cell->position.z;
+	switch (neighborType) {
+	case NEIGHBOR_BELOW:     ny = ny - 1; break;
+	case NEIGHBOR_ABOVE:     ny = ny + 1; break;
+	case NEIGHBOR_LEFT:      nx = nx + 1; break;
+	case NEIGHBOR_RIGHT:     nx = nx - 1; break;
+	case NEIGHBOR_BEHIND:    nz = nz - 1; break;
+	case NEIGHBOR_FRONT:     nz = nz + 1; break;
+	default:                 ASSERT(0, "Valid neighbor type %d", neighborType); break;
+	}
+
+	neighbor = this->hashTable->GetCell(nx, ny, nz);
+	if (neighbor == nullptr && create) {
+		neighbor = this->hashTable->AddCell(nx, ny, nz);
+	}
+
+	return neighbor;
+}

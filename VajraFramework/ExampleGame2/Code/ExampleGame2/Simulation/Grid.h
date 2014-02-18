@@ -9,6 +9,17 @@
 // Forward Declarations:
 class Cell;
 
+enum NEIGHBOR_type {
+	NEIGHBOR_BELOW = 0,
+	NEIGHBOR_ABOVE,
+	NEIGHBOR_LEFT,
+	NEIGHBOR_RIGHT,
+	NEIGHBOR_BEHIND,
+	NEIGHBOR_FRONT,
+	//
+	NEIGHBOR_NUM_NEIGHBORS,
+};
+
 class Grid {
 public:
 	Grid();
@@ -20,10 +31,12 @@ private:
 	void init();
 	void destroy();
 
-	void markSolidCells();
+	bool isCellSolid(int x, int y, int z);
 
 	void updateCells();
 	void drawCells();
+
+	Cell* getNeighborForCell(Cell* cell, NEIGHBOR_type neighborType, bool create = true);
 
 	// Utility Functions:
 	void positionToGridCellCoords(glm::vec3 position, int& out_x, int& out_y, int& out_z);
