@@ -1,6 +1,9 @@
 __VARIABLES__
 vPosition
 mvpMatrix
+
+MaterialDiffuseColor
+MaterialDiffuseColor_out
 __VARIABLES_END__
 
 
@@ -8,6 +11,7 @@ __SOURCE__
 void main()
 {
 	gl_Position = mvpMatrix * vPosition;
+	MaterialDiffuseColor_out = MaterialDiffuseColor;
 }
 __SOURCE_END__
 

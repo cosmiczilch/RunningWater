@@ -71,6 +71,13 @@ namespace Tesserakonteres {
 			// camera->GetTransform()->Rotate(45.0f inRadians, camera->GetTransform()->GetLeft());
 			camera->GetTransform()->LookAt(0.0f, 0.0f, 0.0f);
 			ENGINE->GetSceneGraph3D()->SetMainCameraId(camera->GetId());
+			//
+            Transform* cameratransform = camera->GetTransform();
+            float camMag = glm::distance(cameratransform->GetPosition(), ZERO_VEC3);
+            cameratransform->SetPosition(0.0f, 0.0f, 0.0f);
+            cameratransform->Rotate(-1 * 0.0f inRadians, cameratransform->GetUp());
+            cameratransform->Rotate(0.0f inRadians, cameratransform->GetLeft());
+            cameratransform->Translate(-camMag, cameratransform->GetForward());
 		}
 		{
 			GameObject* dlight = new GameObject(ENGINE->GetSceneGraph3D());

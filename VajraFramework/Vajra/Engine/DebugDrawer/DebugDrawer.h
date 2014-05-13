@@ -28,11 +28,13 @@ void DrawPoint(...)
 #define DrawCube(...)
 #define DrawLine(...)
 #endif
+void SetColor(float r, float g, float b, float a);
 }
 
 class DebugDrawer : public Object {
 public:
 	~DebugDrawer();
+
 
 private:
 	DebugDrawer();
@@ -51,6 +53,8 @@ private:
 	Transform* identityTransform;
 	Transform* generalPurposeTransform;
 
+	glm::vec4 diffuseColor;
+
 	// Friends:
 	friend class Engine;
 	//
@@ -60,6 +64,7 @@ private:
 	friend void DebugDraw::DrawLine(glm::vec3 from, glm::vec3 direction, float length);
 	friend void DebugDraw::DrawArrow(glm::vec3 from, glm::vec3 to);
 	friend void DebugDraw::DrawArrow(glm::vec3 from, glm::vec3 direction, float length);
+	friend void DebugDraw::SetColor(float r, float g, float b, float a);
 };
 
 #endif // DEBUG_DRAWER_H

@@ -21,6 +21,8 @@ void DebugDrawer::init() {
 	this->identityTransform = new Transform();
 	this->generalPurposeTransform = new Transform();
 
+	this->diffuseColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+
 	// Generate VBOs:
 	GLfloat twoVertices[] = {
 		0.0f, 0.0f, 0.0f,
@@ -109,6 +111,12 @@ void DebugDrawer::drawCube(glm::vec3 position, float size) {
     glBindBuffer(GL_ARRAY_BUFFER, this->reusableCubeVbo); checkGlError("glBindBuffer");
     glVertexAttribPointer(positionHandle, 3, GL_FLOAT, GL_FALSE, 0, 0);
     checkGlError("glVertexAttribPointer");
+
+	if (FRAMEWORK->GetOpenGLWrapper()->GetCurrentShaderSet()->HasHandle(SHADER_VARIABLE_VARIABLENAME_MaterialDiffuseColor)) {
+		glUniform4f(FRAMEWORK->GetOpenGLWrapper()->GetCurrentShaderSet()->GetHandle(SHADER_VARIABLE_VARIABLENAME_MaterialDiffuseColor),
+					this->diffuseColor.r, this->diffuseColor.g, this->diffuseColor.b, this->diffuseColor.a);
+	}
+
 	glDrawArrays(GL_LINE_LOOP, 0, 16);
 }
 
@@ -164,4 +172,8 @@ void DebugDraw::DrawArrow(glm::vec3 from, glm::vec3 to) {
 
 void DebugDraw::DrawArrow(glm::vec3 from, glm::vec3 direction, float length) {
 	ENGINE->GetDebugDrawer()->drawArrow(from, from + direction * length);
+}
+
+void DebugDraw::SetColor(float r, float g, float b, float a) {
+	ENGINE->GetDebugDrawer()->diffuseColor = glm::vec4(r, g, b, a);
 }

@@ -2,9 +2,13 @@
 #include "ExampleGame2/Simulation/Grid.h"
 #include "ExampleGame2/Simulation/MarkerParticle.h"
 #include "ExampleGame2/Simulation/Simulation.h"
+#include "Vajra/Engine/Core/Engine.h"
 #include "Vajra/Engine/DebugDrawer/DebugDrawer.h"
+#include "Vajra/Engine/Timer/Timer.h"
 #include "Vajra/Framework/Core/Framework.h"
 #include "Vajra/Framework/Logging/Logger.h"
+
+glm::vec3 g = glm::vec3(0.0f, -9.8f, 0.0f);
 
 Grid::Grid() {
 	this->init();
@@ -29,20 +33,22 @@ void Grid::updateCells() {
 	}
 
 	// Update the cells that currently have fluid in them:
-	for (MarkerParticle* markerParticle : SIMULATION->markerParticles) {
-		int x, y, z;
-		this->positionToGridCellCoords(markerParticle->position, x, y, z);
+	{
+		for (MarkerParticle* markerParticle : SIMULATION->markerParticles) {
+			int x, y, z;
+			this->positionToGridCellCoords(markerParticle->position, x, y, z);
 
-		if (!this->hashTable->HasCell(x, y, z)) {
-			Cell* cell = this->hashTable->AddCell(x, y, z);
-			cell->cellType = CELL_TYPE_FLUID;
-			cell->layer = 0;
-
-		} else {
-			Cell* cell = this->hashTable->GetCell(x, y, z);
-			if (cell->cellType != CELL_TYPE_SOLID) {
+			if (!this->hashTable->HasCell(x, y, z)) {
+				Cell* cell = this->hashTable->AddCell(x, y, z);
 				cell->cellType = CELL_TYPE_FLUID;
 				cell->layer = 0;
+
+			} else {
+				Cell* cell = this->hashTable->GetCell(x, y, z);
+				if (cell->cellType != CELL_TYPE_SOLID) {
+					cell->cellType = CELL_TYPE_FLUID;
+					cell->layer = 0;
+				}
 			}
 		}
 	}
@@ -95,19 +101,190 @@ void Grid::updateCells() {
 		}
 	}
 
+	// Update simulation properties:
+	this->updateConvection();
+	this->updateExternalForces();
+	this->extrapolateFluidVelocitiesToAirCells();
+	this->updateSolidCellVelocities();
+
+
+
+	this->applyVelocities();
+
 	FRAMEWORK->GetLogger()->dbglog("\nNumber of cells: %u", this->hashTable->Size());
 	this->drawCells();
 }
 
+void Grid::updateConvection() {
+	return;
+}
+
+
+void Grid::updateExternalForces() {
+	float deltaTime = ENGINE->GetTimer()->GetDeltaFrameTime();
+
+	// Add gravity:
+	{
+		this->hashTable->iterator_BeginCells();
+		Cell* cell = nullptr;
+		while ((cell = this->hashTable->iterator_NextCell()) != nullptr) {
+			if (cell->cellType == CELL_TYPE_FLUID) {
+				cell->u += g * deltaTime;
+			}
+		}
+	}
+}
+
+void Grid::updateSolidCellVelocities() {
+	/*
+	 * Prevent fluid from entering solid cells
+	 */
+	{
+		this->hashTable->iterator_BeginCells();
+		Cell* cell = nullptr;
+		while ((cell = this->hashTable->iterator_NextCell()) != nullptr) {
+			if (cell->cellType == CELL_TYPE_SOLID) {
+				for (unsigned int neighbor_type = NEIGHBOR_BELOW; neighbor_type < NEIGHBOR_NUM_NEIGHBORS; ++neighbor_type) {
+					Cell* neighbor = this->getNeighborForCell(cell, (NEIGHBOR_type)neighbor_type, false);
+					if (neighbor != nullptr) {
+						switch (neighbor_type) {
+
+						case NEIGHBOR_BELOW: {
+							if (neighbor->u.y > 0.0f) {
+								neighbor->u.y = 0.0f;
+							}
+						} break;
+
+						case NEIGHBOR_ABOVE: {
+							if (neighbor->u.y < 0.0f) {
+								neighbor->u.y = 0.0f;
+							}
+						} break;
+
+						case NEIGHBOR_LEFT: {
+							if (neighbor->u.x < 0.0f) {
+								neighbor->u.x = 0.0f;
+							}
+						} break;
+
+						case NEIGHBOR_RIGHT: {
+							if (neighbor->u.x > 0.0f) {
+								neighbor->u.x = 0.0f;
+							}
+						} break;
+
+						case NEIGHBOR_BEHIND: {
+							if (neighbor->u.z < 0.0f) {
+								neighbor->u.z = 0.0f;
+							}
+						} break;
+
+						case NEIGHBOR_FRONT: {
+							if (neighbor->u.z > 0.0f) {
+								neighbor->u.z = 0.0f;
+							}
+						} break;
+
+						default: {
+							ASSERT(0, "Shouldn't be here.");
+						} break;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+class Averager {
+public:
+	Averager() {
+		this->runningSum = 0;
+		this->numItems = 0;
+	}
+
+	void AddItem(float item) {
+		this->runningSum += item;
+		this->numItems++;
+	}
+
+	float GetAverage() {
+		return (this->runningSum / (float)this->numItems);
+	}
+
+private:
+	float runningSum;
+	unsigned int numItems;
+};
+
+void Grid::extrapolateFluidVelocitiesToAirCells() {
+
+	{
+		// Set layer field to 0 for fluid cells and -1 for every other type:
+		this->hashTable->iterator_BeginCells();
+		Cell* cell = nullptr;
+		while ((cell = this->hashTable->iterator_NextCell()) != nullptr) {
+			if (cell->cellType == CELL_TYPE_FLUID) {
+				cell->layer =  0;
+			} else {
+				cell->layer = -1;
+			}
+		}
+
+		const int numBufferZoneLayers = 3;
+		for (int layerNumber = 1; layerNumber <= numBufferZoneLayers; ++layerNumber) {
+			this->hashTable->iterator_BeginCells();
+			Cell* cell = nullptr;
+			while ((cell = this->hashTable->iterator_NextCell()) != nullptr) {
+				if (cell->layer == -1) {
+					Averager uxAverager, uyAverager, uzAverager;
+					for (int neighbor_type = NEIGHBOR_BELOW; neighbor_type < NEIGHBOR_NUM_NEIGHBORS; ++neighbor_type) {
+						Cell* neighbor = this->getNeighborForCell(cell, (NEIGHBOR_type)neighbor_type, false);
+						if (neighbor != nullptr) {
+							if (neighbor->layer == (layerNumber - 1)) {
+								uxAverager.AddItem(neighbor->u.x);
+								uyAverager.AddItem(neighbor->u.y);
+								uzAverager.AddItem(neighbor->u.z);
+							}
+						}
+					}
+					cell->u = glm::vec3(uxAverager.GetAverage(), uyAverager.GetAverage(), uzAverager.GetAverage());
+					cell->layer = layerNumber;
+				}
+			}
+		}
+
+
+	}
+}
+
+void Grid::applyVelocities() {
+	float deltaTime = ENGINE->GetTimer()->GetDeltaFrameTime();
+
+	{
+		for (MarkerParticle* markerParticle : SIMULATION->markerParticles) {
+			int x, y, z;
+			this->positionToGridCellCoords(markerParticle->position, x, y, z);
+
+			Cell* cell = this->hashTable->GetCell(x, y, z);
+			if (cell != nullptr) {
+				if (cell->cellType == CELL_TYPE_FLUID) {
+					markerParticle->position += cell->u * deltaTime;
+				}
+			}
+		}
+	}
+}
+
 bool Grid::isCellSolid(int x, int y, int z) {
-	if (y <= 0) {
+	if (y < 0) {
 		// Floor
 		return true;
 	}
-	if (x <= 0 || x >= WATER_ARENA_SIZE) {
+	if (x < 0 || x > WATER_ARENA_SIZE) {
 		return true;
 	}
-	if (z <= 0 || z >= WATER_ARENA_SIZE) {
+	if (z < 0 || z > WATER_ARENA_SIZE) {
 		return true;
 	}
 	Cell* cell = this->hashTable->GetCell(x, y, z);
@@ -134,10 +311,19 @@ void Grid::drawCells() {
 #ifdef DEBUG
 #endif
 
+	// return;
+
 	{
 		this->hashTable->iterator_BeginCells();
 		Cell* cell = nullptr;
 		while ((cell = this->hashTable->iterator_NextCell()) != nullptr) {
+			if (cell->cellType == CELL_TYPE_AIR) {
+				DebugDraw::SetColor(1.0f, 1.0f, 1.0f, 0.1f);
+			} else if (cell->cellType == CELL_TYPE_FLUID) {
+				DebugDraw::SetColor(0.0f, 0.0f, 1.0f, 0.4f);
+			} else if (cell->cellType == CELL_TYPE_SOLID) {
+				DebugDraw::SetColor(0.0f, 0.0f, 0.0f, 0.4f);
+			}
 			DebugDraw::DrawCube(glm::vec3(cell->position.x + CELL_SIZE/2.0f, cell->position.y + CELL_SIZE/2.0f, cell->position.z + CELL_SIZE/2.0f), CELL_SIZE);
 		}
 	}
@@ -165,3 +351,4 @@ Cell* Grid::getNeighborForCell(Cell* cell, NEIGHBOR_type neighborType, bool crea
 
 	return neighbor;
 }
+

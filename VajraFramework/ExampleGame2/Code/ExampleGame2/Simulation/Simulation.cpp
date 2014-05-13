@@ -31,7 +31,7 @@ void Simulation::BeginSimulation() {
 
 	this->simulationObject = new GameObject(ENGINE->GetSceneGraph3D());
 	ENGINE->GetSceneGraph3D()->GetRootGameObject()->AddChild(this->simulationObject->GetId());
-	this->simulationManager = this->simulationObject->AddComponent<SimulationManager>();
+	this->simulationManagerRef = this->simulationObject->AddComponent<SimulationManager>();
 	//
 	/* ParticleSystemRenderer* renderer = */ this->simulationObject->AddComponent<ParticleSystemRenderer>();
 }

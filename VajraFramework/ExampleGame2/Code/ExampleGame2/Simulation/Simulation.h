@@ -30,7 +30,7 @@ private:
 	//
 	// A game object on which the SimulationManager and Renderer components will be added:
 	GameObject* simulationObject;
-	SimulationManager* simulationManager;
+	SimulationManager* simulationManagerRef;
 
 	void init();
 	void destroy();

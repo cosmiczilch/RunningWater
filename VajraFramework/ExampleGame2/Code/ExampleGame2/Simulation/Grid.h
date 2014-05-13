@@ -34,6 +34,11 @@ private:
 	bool isCellSolid(int x, int y, int z);
 
 	void updateCells();
+	void updateConvection();
+	void updateExternalForces();
+	void updateSolidCellVelocities();
+	void extrapolateFluidVelocitiesToAirCells();
+	void applyVelocities();
 	void drawCells();
 
 	Cell* getNeighborForCell(Cell* cell, NEIGHBOR_type neighborType, bool create = true);

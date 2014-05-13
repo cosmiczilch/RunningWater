@@ -34,16 +34,16 @@ void SimulationManager::start() {
 	this->createMarkerParticles();
 }
 
-const float initialCubeSize = INITIAL_WATER_CUBE_SIZE;
+const float g_initialCubeSize = INITIAL_WATER_CUBE_SIZE;
 
 void SimulationManager::update() {
 	// FRAMEWORK->GetLogger()->dbglog("\nHere in SimulationManager update()");
 
 	SIMULATION->grid->Update();
 
-#if 1
+#if 0
 	for (MarkerParticle* markerParticle : SIMULATION->markerParticles) {
-		markerParticle->position = glm::vec3(randf() * initialCubeSize, randf() * initialCubeSize, randf() * initialCubeSize);
+		markerParticle->position = glm::vec3(randf() * g_initialCubeSize, randf() * g_initialCubeSize, randf() * g_initialCubeSize);
 	}
 #endif
 
@@ -57,8 +57,7 @@ void SimulationManager::createMarkerParticles() {
 	ASSERT(SIMULATION->markerParticles.size() == 0, "No particles have been created already");
 	for (unsigned int i = 0; i < NUMBER_OF_MARKER_PARTICLES; ++i) {
 		MarkerParticle* markerParticle = new MarkerParticle();
-		markerParticle->position = glm::vec3(randf() * initialCubeSize, randf() * initialCubeSize, randf() * initialCubeSize);
-		markerParticle->position = glm::vec3(randf(), randf(), randf());
+		markerParticle->position = glm::vec3(randf() * g_initialCubeSize, randf() * g_initialCubeSize, randf() * g_initialCubeSize);
 
 		SIMULATION->markerParticles.push_back(markerParticle);
 	}
