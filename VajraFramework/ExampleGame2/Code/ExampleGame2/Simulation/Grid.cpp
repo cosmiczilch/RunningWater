@@ -7,6 +7,7 @@
 #include "Vajra/Engine/Timer/Timer.h"
 #include "Vajra/Framework/Core/Framework.h"
 #include "Vajra/Framework/Logging/Logger.h"
+#include "Vajra/Utilities/Utilities.h"
 
 glm::vec3 g = glm::vec3(0.0f, -9.8f, 0.0f);
 
@@ -196,26 +197,6 @@ void Grid::updateSolidCellVelocities() {
 	}
 }
 
-class Averager {
-public:
-	Averager() {
-		this->runningSum = 0;
-		this->numItems = 0;
-	}
-
-	void AddItem(float item) {
-		this->runningSum += item;
-		this->numItems++;
-	}
-
-	float GetAverage() {
-		return (this->runningSum / (float)this->numItems);
-	}
-
-private:
-	float runningSum;
-	unsigned int numItems;
-};
 
 void Grid::extrapolateFluidVelocitiesToAirCells() {
 

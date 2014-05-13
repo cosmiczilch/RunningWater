@@ -58,4 +58,25 @@ typedef int ComponentIdType;
 #define NOT_HANDLED false
 #define HANDLED true
 
+class Averager {
+public:
+	Averager() {
+		this->runningSum = 0;
+		this->numItems = 0;
+	}
+
+	void AddItem(float item) {
+		this->runningSum += item;
+		this->numItems++;
+	}
+
+	float GetAverage() {
+		return (this->runningSum / (float)this->numItems);
+	}
+
+private:
+	float runningSum;
+	unsigned int numItems;
+};
+
 #endif // UTILITIES_H
