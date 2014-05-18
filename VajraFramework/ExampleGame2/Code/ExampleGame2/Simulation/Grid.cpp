@@ -105,6 +105,7 @@ void Grid::updateCells() {
 	// Update simulation properties:
 	this->updateConvection();
 	this->updateExternalForces();
+	this->updateSolidNormalForces();
 	this->extrapolateFluidVelocitiesToAirCells();
 	this->updateSolidCellVelocities();
 
@@ -134,6 +135,9 @@ void Grid::updateExternalForces() {
 			}
 		}
 	}
+}
+
+void Grid::updateSolidNormalForces() {
 }
 
 void Grid::updateSolidCellVelocities() {

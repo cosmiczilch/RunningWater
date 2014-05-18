@@ -36,6 +36,7 @@ private:
 	void updateCells();
 	void updateConvection();
 	void updateExternalForces();
+	void updateSolidNormalForces();
 	void updateSolidCellVelocities();
 	void extrapolateFluidVelocitiesToAirCells();
 	void applyVelocities();
