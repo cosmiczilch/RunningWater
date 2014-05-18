@@ -1,0 +1,11 @@
+#ifplatform iOS | Android
+precision mediump float;
+#endif
+
+varying vec4 MaterialDiffuseColor_out;
+
+void main()
+{
+	gl_FragColor = MaterialDiffuseColor_out;
+}
+
