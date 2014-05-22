@@ -37,9 +37,10 @@ LOCAL_CPPFLAGS = -std=c++11
 LIBDIR = -L/usr/lib
 
 LIB_FLAGS = -lglfw -lGL -lGLU -lGLEW -lpthread -lXxf86vm -lz
-# Include libpng, zlib, and OpenAL libraries:
+# Include libpng, zlib, OpenAL, and Box2D libraries:
 LOCAL_LIB_FLAGS += ./Libraries/openal-linux/built/libopenal.so
 LOCAL_DEARCHIVED_STATIC_LIBRARIES_PATH += ./Libraries/libpng/built/dearchived_linux/
+LOCAL_DEARCHIVED_STATIC_LIBRARIES_PATH += ./Libraries/Box2D_preBuilt/dearchived_linux/
 LOCAL_INCLUDES += . ./Libraries/libpng/headers/
 
 BUILDDIR = DesktopProject/Built

@@ -4,21 +4,8 @@
 #include "ExampleGame3/Simulation/Declarations.h"
 #include "ExampleGame3/Simulation/GridHashTable.h"
 
+#include "Libraries/Box2D/Box2D.h"
 #include "Libraries/glm/glm.hpp"
-
-// Forward Declarations:
-class Cell;
-
-enum NEIGHBOR_type {
-	NEIGHBOR_BELOW = 0,
-	NEIGHBOR_ABOVE,
-	NEIGHBOR_LEFT,
-	NEIGHBOR_RIGHT,
-	NEIGHBOR_BEHIND,
-	NEIGHBOR_FRONT,
-	//
-	NEIGHBOR_NUM_NEIGHBORS,
-};
 
 class Grid {
 public:
@@ -31,23 +18,16 @@ private:
 	void init();
 	void destroy();
 
-	bool isCellSolid(int x, int y, int z);
+	void updateParticles();
 
-	void updateCells();
-	void updateConvection();
-	void updateExternalForces();
-	void updateSolidNormalForces();
-	void updateSolidCellVelocities();
-	void extrapolateFluidVelocitiesToAirCells();
-	void applyVelocities();
-	void drawCells();
+	void createBox2DWorld();
+	void createParticleGroup();
 
-	Cell* getNeighborForCell(Cell* cell, NEIGHBOR_type neighborType, bool create = true);
+	b2World* boxWorld;
+	b2ParticleSystemDef boxParticleSystemDef;
+	b2ParticleSystem* boxParticleSystem;
 
-	// Utility Functions:
-	void positionToGridCellCoords(glm::vec3 position, int& out_x, int& out_y, int& out_z);
-
-	GridHashTable* hashTable;
+	b2ParticleGroup* boxParticleGroup;
 };
 
 #endif // GRID_H

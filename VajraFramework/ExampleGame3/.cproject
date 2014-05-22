@@ -19,7 +19,7 @@
 					<folderInfo id="0.1314776844." name="/" resourcePath="">
 						<toolChain id="org.eclipse.cdt.build.core.prefbase.toolchain.458617195" name="No ToolChain" resourceTypeBasedDiscovery="false" superClass="org.eclipse.cdt.build.core.prefbase.toolchain">
 							<targetPlatform binaryParser="org.eclipse.cdt.core.PE" id="org.eclipse.cdt.build.core.prefbase.toolchain.458617195.290679265" name=""/>
-							<builder arguments="windows" buildPath="${workspace_loc:/ExampleGame3}" command="${workspace_loc:/ExampleGame}\build.bat" id="org.eclipse.cdt.build.core.settings.default.builder.266178752" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="org.eclipse.cdt.build.core.settings.default.builder"/>
+							<builder arguments="linux" buildPath="${workspace_loc:/ExampleGame3}" command="${workspace_loc:/ExampleGame3}/build.sh" id="org.eclipse.cdt.build.core.settings.default.builder.266178752" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="org.eclipse.cdt.build.core.settings.default.builder"/>
 							<tool id="org.eclipse.cdt.build.core.settings.holder.libs.997033111" name="holder for library settings" superClass="org.eclipse.cdt.build.core.settings.holder.libs"/>
 							<tool id="org.eclipse.cdt.build.core.settings.holder.1384046958" name="Assembly" superClass="org.eclipse.cdt.build.core.settings.holder">
 								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.906304169" languageId="org.eclipse.cdt.core.assembly" languageName="Assembly" sourceContentType="org.eclipse.cdt.core.asmSource" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>

@@ -25,41 +25,6 @@ int TestFuntion() {
 	// Instantiate a ComponentMapper so that its singleton gets stored:
 	/* ComponentMapper* componentMapper = */ new ComponentMapper();
 
-	{
-#if 0
-		/*GameObject* gameObject = */PrefabLoader::InstantiateGameObjectFromPrefab(
-							    	 FRAMEWORK->GetFileSystemUtils()->GetDevicePrefabsResourcesPath() + "test.prefab",
-						   	     	 ENGINE->GetSceneGraph3D());
-#endif
-	}
-	{
-#if 0
-		/*GameObject* gameObject = */PrefabLoader::InstantiateGameObjectFromPrefab(
-							    	 FRAMEWORK->GetFileSystemUtils()->GetDevicePrefabsResourcesPath() + "fire_0.prefab",
-						   	     	 ENGINE->GetSceneGraph3D());
-#endif
-	}
-	{
-#if 0
-		/*GameObject* gameObject = */PrefabLoader::InstantiateGameObjectFromPrefab(
-							    	 FRAMEWORK->GetFileSystemUtils()->GetDevicePrefabsResourcesPath() + "fire_1.prefab",
-						   	     	 ENGINE->GetSceneGraph3D());
-#endif
-	}
-	{
-#if 0
-		/*GameObject* gameObject = */PrefabLoader::InstantiateGameObjectFromPrefab(
-							    	 FRAMEWORK->GetFileSystemUtils()->GetDevicePrefabsResourcesPath() + "fire_2.prefab",
-						   	     	 ENGINE->GetSceneGraph3D());
-#endif
-	}
-	{
-#if 0
-		/*GameObject* gameObject = */PrefabLoader::InstantiateGameObjectFromPrefab(
-							    	 FRAMEWORK->GetFileSystemUtils()->GetDevicePrefabsResourcesPath() + "fire_3.prefab",
-						   	     	 ENGINE->GetSceneGraph3D());
-#endif
-	}
 
 
 	initUiGameObjects();
@@ -70,19 +35,6 @@ int TestFuntion() {
 }
 
 void initUiGameObjects() {
-	{
-		GameObject* camera = new GameObject(ENGINE->GetSceneGraphUi());
-		ENGINE->GetSceneGraphUi()->GetRootGameObject()->AddChild(camera->GetId());
-		Camera* cameraComponent = camera->AddComponent<Camera>();
-		cameraComponent->SetCameraType(CAMERA_TYPE_ORTHO);
-		camera->GetTransform()->SetPosition(0.0f, 0.0f, 400.0f);
-		camera->GetTransform()->Rotate(10.0f inRadians, YAXIS);
-		// camera->GetTransform()->SetOrientation(-45.0f inRadians, camera->GetTransform()->GetUp());
-		// camera->GetTransform()->Rotate(45.0f inRadians, camera->GetTransform()->GetLeft());
-		camera->GetTransform()->LookAt(0.0f, 0.0f, 0.0f);
-		ENGINE->GetSceneGraphUi()->SetMainCameraId(camera->GetId());
-	}
-
 	{
 		std::string pathToTestUiScene = FRAMEWORK->GetFileSystemUtils()->GetDeviceUiScenesResourcesPath() + "testUiScene.uiscene";
 		UiSceneLoader::LoadUiSceneFromUiSceneFile(pathToTestUiScene.c_str(), new TestUiSceneTouchHandlers());

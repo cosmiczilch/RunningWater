@@ -31,6 +31,12 @@ echo -e "Extracting and copying Headers from $LIBRARIES_HEADERS_ROOT/ to $LIBRAR
 mkdir -p $LIBRARIES_HEADERS_DESTINATION
 rsync -r --delete --update $LIBRARIES_HEADERS_ROOT/* $LIBRARIES_HEADERS_DESTINATION/.
 
+LIBRARIES_HEADERS_ROOT="../Libraries/Box2D";
+LIBRARIES_HEADERS_DESTINATION="./include/Libraries/Box2D";
+echo -e "Extracting and copying Headers from $LIBRARIES_HEADERS_ROOT/ to $LIBRARIES_HEADERS_DESTINATION/";
+mkdir -p $LIBRARIES_HEADERS_DESTINATION
+rsync -r --delete --update $LIBRARIES_HEADERS_ROOT/* $LIBRARIES_HEADERS_DESTINATION/.
+
 if [ $1 == "ios" ]
 then
 	if [ $# -lt 2 -o $# -gt 2 ]

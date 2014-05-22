@@ -30,6 +30,8 @@
 #include "Libraries/glm/gtx/transform.hpp"
 #include "Libraries/glm/gtc/type_ptr.hpp"
 
+#include "Libraries/Box2D/Box2D.h"
+
 #include <vector>
 
 
@@ -97,6 +99,7 @@ namespace Tesserakonteres {
 		ENGINE->GetTween()->TweenToNumber(-20.0f, 20.0f, 20.0f, true, true, true, "numbertween", userParams, tweenNumberCallback);
 
 		FRAMEWORK->GetLogger()->dbglog("\nDone loading game objects for the scene");
+
 	}
 
 }
