@@ -57,7 +57,8 @@ void SimulationManager::createMarkerParticles() {
 	ASSERT(SIMULATION->markerParticles.size() == 0, "No particles have been created already");
 	for (unsigned int i = 0; i < NUMBER_OF_MARKER_PARTICLES; ++i) {
 		MarkerParticle* markerParticle = new MarkerParticle();
-		markerParticle->position = glm::vec3(randf() * g_initialCubeSize, 2.0f + randf() * g_initialCubeSize, randf() * g_initialCubeSize);
+		// markerParticle->position = glm::vec3(randf() * g_initialCubeSize, 2.0f + randf() * g_initialCubeSize, randf() * g_initialCubeSize);
+		markerParticle->position = glm::vec3(-9999.0f, -9999.0f, -9999.0f);
 
 		SIMULATION->markerParticles.push_back(markerParticle);
 	}

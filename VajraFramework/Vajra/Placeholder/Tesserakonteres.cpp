@@ -68,18 +68,18 @@ namespace Tesserakonteres {
 			ENGINE->GetSceneGraph3D()->GetRootGameObject()->AddChild(camera->GetId());
 			Camera* cameraComponent = camera->AddComponent<Camera>();
 			cameraComponent->SetCameraType(CAMERA_TYPE_PERSPECTIVE);
-			camera->GetTransform()->SetPosition(20.0f, 20.0f, 20.0f);
+			// camera->GetTransform()->SetPosition(20.0f, 20.0f, 20.0f);
 			// camera->GetTransform()->SetOrientation(-45.0f, camera->GetTransform()->GetUp());
 			// camera->GetTransform()->Rotate(45.0f inRadians, camera->GetTransform()->GetLeft());
-			camera->GetTransform()->LookAt(0.0f, 0.0f, 0.0f);
+			// camera->GetTransform()->LookAt(0.0f, 0.0f, 0.0f);
 			ENGINE->GetSceneGraph3D()->SetMainCameraId(camera->GetId());
 			//
             Transform* cameratransform = camera->GetTransform();
-            float camMag = glm::distance(cameratransform->GetPosition(), ZERO_VEC3);
-            cameratransform->SetPosition(0.0f, 0.0f, 0.0f);
-            cameratransform->Rotate(-1 * 0.0f inRadians, cameratransform->GetUp());
-            cameratransform->Rotate(0.0f inRadians, cameratransform->GetLeft());
-            cameratransform->Translate(-camMag, cameratransform->GetForward());
+            cameratransform->SetPosition(200.0f, 200.0f, 200.0f);
+			// cameratransform->LookAt(0.0f, 0.0f, 0.0f);
+            cameratransform->Rotate(180.0f inRadians, cameratransform->GetUp());
+            cameratransform->Rotate(45.0f inRadians, cameratransform->GetUp());
+            cameratransform->Rotate(45.0f inRadians, cameratransform->GetLeft());
 		}
 		{
 			GameObject* dlight = new GameObject(ENGINE->GetSceneGraph3D());

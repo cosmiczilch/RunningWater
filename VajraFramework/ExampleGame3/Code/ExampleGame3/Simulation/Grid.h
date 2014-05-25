@@ -19,6 +19,7 @@ private:
 	void destroy();
 
 	void updateParticles();
+	void updateInput();
 
 	void createBox2DWorld();
 	void createParticleGroup();
@@ -28,6 +29,8 @@ private:
 	b2ParticleSystem* boxParticleSystem;
 
 	b2ParticleGroup* boxParticleGroup;
+
+	b2Body* groundBody;
 };
 
 #endif // GRID_H

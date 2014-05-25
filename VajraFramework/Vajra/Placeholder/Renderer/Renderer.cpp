@@ -92,7 +92,7 @@ bool renderFrame() {
 
     float deltaTime = ENGINE->GetTimer()->GetDeltaFrameTime();
 
-#if 1
+#if 0
     {
         if(ENGINE->GetInput()->GetTouchCount() > 0)
         {
@@ -116,8 +116,9 @@ bool renderFrame() {
 	GameObject* torus = ENGINE->GetSceneGraph3D()->GetGameObjectById(115);
 	DebugDraw::DrawArrow(ZERO_VEC3, torus->GetTransform()->GetPosition());
 
-	DebugDraw::DrawCube(torus->GetTransform()->GetPosition(), 1.0f);
 #endif
+
+	DebugDraw::DrawCube(glm::vec3(0.0f, 0.0f, 0.0f), 1.0f);
 
 
     ENGINE->DoFrame();
